@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 const DATABASE_URI = process.env.DATABASE_URI;
+const REACT_APP_LINK = process.env.REACT_APP_LINK;
 
 // initialize the server
 const app = express();
@@ -21,7 +22,7 @@ app.use(cookieParser());
 
 // allow CORS
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+  res.setHeader("Access-Control-Allow-Origin", REACT_APP_LINK);
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST");
   res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type,X-Requested-With,Cookie");
   res.setHeader("Access-Control-Allow-Credentials", "true");
