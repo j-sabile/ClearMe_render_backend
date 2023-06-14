@@ -3,6 +3,7 @@ import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import setUpRoutes from "./routes.js";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 const DATABASE_URI = process.env.DATABASE_URI;
