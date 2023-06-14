@@ -17,7 +17,7 @@ await mongoose
   .then(() => console.log("Connect to MongoDB"))
   .catch((err) => console.log(err));
 
-app.use(cors({ origin: process.env.REACT_APP_LINK, credentials: true }));
+app.use(cors({ origin: REACT_APP_LINK, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
