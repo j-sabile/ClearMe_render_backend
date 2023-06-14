@@ -44,6 +44,7 @@ const loginStudent = async (req, res) => {
 };
 
 const checkIfLoggedIn = async (req, res) => {
+  console.log(req.cookies);
   try {
     if (!req.cookies || !req.cookies.authToken) return res.status(200).json({ isLoggedIn: false, message: "No Cookies" });
 
@@ -70,7 +71,7 @@ const logInAsAdmin = (req, res) => {
   try {
     if (email === "admin" && password === "admin") {
       const token = jwt.sign({ _id: "admin" }, "THIS_IS_A_SECRET_STRING");
-      res.cookie("authToken", token, { httpOnly: true, secure: true, sameSite: "none" });
+      res.cookie("jwt", token, { httpOnly: true, secure: true, sameSite: "none" });
       return res.status(200).json({ success: true, token, username: "admin" });
     } else {
       return res.status(403).json({ success: false });
