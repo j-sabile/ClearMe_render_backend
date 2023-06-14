@@ -16,18 +16,20 @@ await mongoose
   .then(() => console.log("Connect to MongoDB"))
   .catch((err) => console.log(err));
 
+app.use(cors({ origin: process.env.REACT_APP_LINK, credentials: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
 // allow CORS
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", REACT_APP_LINK);
-  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST");
-  res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type,X-Requested-With,Cookie");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  next();
-});
+
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", REACT_APP_LINK);
+//   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS,POST");
+//   res.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers,Access-Control-Allow-Methods,Origin,Accept,Content-Type,X-Requested-With,Cookie");
+//   res.setHeader("Access-Control-Allow-Credentials", "true");
+//   next();
+// });
 
 // setup routes
 setUpRoutes(app);
