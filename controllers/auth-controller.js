@@ -45,7 +45,7 @@ const loginStudent = async (req, res) => {
 
 const checkIfLoggedIn = async (req, res) => {
   try {
-    if (!req.cookies || !req.cookies.authToken) return res.status(200).json({ isLoggedIn: false });
+    if (!req.cookies || !req.cookies.authToken) return res.status(200).json({ isLoggedIn: false, message: "No Cookies" });
 
     const tokenPayload = jwt.verify(req.cookies.authToken, "THIS_IS_A_SECRET_STRING");
     if (tokenPayload._id == "admin") {
