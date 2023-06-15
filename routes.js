@@ -1,4 +1,4 @@
-import { signUpStudent, loginStudent, checkIfLoggedIn, logInAsAdmin } from "./controllers/auth-controller.js";
+import { signUpStudent, loginStudent, checkIfLoggedIn, logInAsAdmin, logout } from "./controllers/auth-controller.js";
 import {
   viewStudentInfo,
   getAdviserDetails,
@@ -83,6 +83,7 @@ const setUpRoutes = (app) => {
 
   // general
   app.post("/getLoggedIn", getLoggedIn);
+  app.post("/logout", logout);
 };
 
 export default setUpRoutes;

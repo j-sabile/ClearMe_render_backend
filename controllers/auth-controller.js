@@ -44,7 +44,6 @@ const loginStudent = async (req, res) => {
 };
 
 const checkIfLoggedIn = async (req, res) => {
-  console.log(req.cookies);
   try {
     if (!req.cookies || !req.cookies.authToken) return res.status(200).json({ isLoggedIn: false, message: "No Cookies" });
 
@@ -82,4 +81,9 @@ const logInAsAdmin = (req, res) => {
   }
 };
 
-export { signUpStudent, loginStudent, checkIfLoggedIn, logInAsAdmin };
+const logout = (req, res) => {
+  res.clearCookie("authToken", { sameSite: "none", secure: true, httpOnly: true });
+  res.status(200).json({ success: true });
+};
+
+export { signUpStudent, loginStudent, checkIfLoggedIn, logInAsAdmin, logout };
