@@ -34,8 +34,8 @@ const loginStudent = async (req, res) => {
       if (err || !isMatch) return res.send({ success: false });
       const tokenPayload = { _id: user._id };
       const token = jwt.sign(tokenPayload, "THIS_IS_A_SECRET_STRING");
-      const fullName = user.first_name + " " + user.last_name;
-      return res.status(200).json({ success: true, token, username: fullName });
+      res.cookie("authToken", token, { httpOnly: true, secure: true, sameSite: "none" });
+      return res.status(200).json({ success: true, username: user.first_name + " " + user.last_name });
     });
   } catch (error) {
     console.log(`Error in auth-controller - loginStudent: ${error}`);

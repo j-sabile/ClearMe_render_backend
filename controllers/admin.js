@@ -27,10 +27,7 @@ const approveStudentAccount = async (req, res) => {
     const foundApprover = await Approver.findById(approverId);
 
     if (!foundStudent.length == 0 && foundApprover) {
-      const result = await Student.findByIdAndUpdate(
-        { status: "pending", _id: studentId },
-        { $set: { status: "approved", adviser: approverId } }
-      );
+      const result = await Student.findByIdAndUpdate({ status: "pending", _id: studentId }, { $set: { status: "approved", adviser: approverId } });
       if (result) res.status(200).json({ success: true });
       else res.status(404).json({ success: false });
     } else res.status(404).json({ success: false });
@@ -76,7 +73,7 @@ const addApproverAccount = async (req, res) => {
     const initials_surname =
       first_name
         .split(" ")
-        .map(word => word.charAt(0))
+        .map((word) => word.charAt(0))
         .join("") +
       middle_name.toUpperCase().charAt(0) +
       last_name.toUpperCase().replace(/ /g, "");
@@ -104,7 +101,7 @@ const editApproverAccount = async (req, res) => {
   updatedApprover.initials_surname =
     updatedApprover.first_name
       .split(" ")
-      .map(word => word.charAt(0))
+      .map((word) => word.charAt(0))
       .join("") +
     updatedApprover.middle_name.toUpperCase().charAt(0) +
     updatedApprover.last_name.toUpperCase().replace(/ /g, "");
@@ -149,8 +146,8 @@ const loginApprover = async (req, res) => {
       if (err || !isMatch) return res.send({ success: false });
       const tokenPayload = { _id: user._id };
       const token = jwt.sign(tokenPayload, "THIS_IS_A_SECRET_STRING");
-      const fullName = user.first_name + " " + user.last_name;
-      return res.send({ success: true, token, username: fullName });
+      res.cookie("authToken", token, { httpOnly: true, secure: true, sameSite: "none" });
+      return res.send({ success: true, token, username: user.first_name + " " + user.last_name });
     });
   } catch (error) {
     console.log(`Error in admin - loginApprover: ${error}`);
@@ -170,7 +167,7 @@ const checkIfLoggedInApprover = async (req, res) => {
   }
 };
 
-const approveStudentByCsv = async row => {
+const approveStudentByCsv = async (row) => {
   const { adviserInitials, studentNumber } = row;
   const adviser = await Approver.findOne({ initials_surname: adviserInitials });
   await Student.findOne({ student_number: studentNumber }).updateOne({ adviser: adviser._id, status: "approved" });
@@ -184,7 +181,7 @@ const uploadCSV = async (req, res) => {
   const promises = [];
   fs.createReadStream(file.path)
     .pipe(csvParser())
-    .on("data", row => promises.push(approveStudentByCsv(row)))
+    .on("data", (row) => promises.push(approveStudentByCsv(row)))
     .on("end", async () => {
       await Promise.all(promises);
       res.status(200).json({ success: true });
@@ -197,7 +194,7 @@ const getStudentApplicationAdmin = async (req, res) => {
       .select("-password")
       .populate({ path: "open_application", match: { status: "pending", current_step: 3 } })
       .exec();
-    const filteredResult = result.filter(student => student.open_application != null);
+    const filteredResult = result.filter((student) => student.open_application != null);
     res.status(200).json({ success: true, request: filteredResult });
   } catch (error) {
     console.log(`Error in admin - getStudentApplicationAdmin(): ${error}`);
@@ -239,7 +236,7 @@ const getAllApplications = async (req, res) => {
     const result = await Student.find({ open_application: { $ne: null } })
       .select("-password")
       .populate("open_application");
-    const filteredResult = result.filter(student => student.open_application != null);
+    const filteredResult = result.filter((student) => student.open_application != null);
     res.status(200).json({ success: true, request: filteredResult });
   } catch (error) {
     console.log(`Error in admin - getAllApplications(): ${error}`);
